@@ -6,72 +6,87 @@ public class BinarySearch {
     public static void main(String[] args) {
 
         SecureRandom oRand = new SecureRandom();
-        int iNumTotal = 100000000;
-        int[] aiNums = new int[iNumTotal];
-        int iTargetNum;
-        int iTargetNumIndex;
+        int iasWordsTotal = 10;  //Scalable
+        String[] asWords = new String[iasWordsTotal];
+        String sTargetString;
+        int iTargetIndex;
         int iIndexReturned;
         long lTimeStarted;
         long lTimeEnded;
 
-        // Fill array with random nums
-        for(int i = 0; i < iNumTotal; i++){
-            aiNums[i] = oRand.nextInt();
+        //for fun
+        // Fill array with random stings w/length from  5 to 20
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder sb;
+
+        for(int i = 0; i < asWords.length; i++){
+            sb = new StringBuilder();
+            for(int j = 0; j < oRand.nextInt(16) + 5; j++) {
+                int index = oRand.nextInt(alphabet.length());
+                char randomChar = alphabet.charAt(index);
+                if( oRand.nextInt(100) < 30){  // 30% chance to be lower case
+                   randomChar = Character.toLowerCase(randomChar);
+                }
+                sb.append(randomChar);
+            }
+            asWords[i] = sb.toString();
         }
 
+        System.out.println(Arrays.toString(asWords)); //unsorted
         // sort the array to enable binary search
-        Arrays.sort(aiNums);
+        Arrays.sort(asWords);
+        System.out.println(Arrays.toString(asWords)); //sorted
 
-        // get target num to pass to our search algorithm
-        iTargetNumIndex = oRand.nextInt(iNumTotal); //0 - 99
-        iTargetNum = aiNums[iTargetNumIndex];
-        System.out.println("Target num's index is: [" + iTargetNumIndex + "]\n");
+        // get target String to pass to our search algorithm
+        iTargetIndex = oRand.nextInt(asWords.length); //0 - 9
+        sTargetString = asWords[iTargetIndex];
+        System.out.println("\nTarget Word's index is: [" + iTargetIndex + "]\n");
 
         BinarySearch oBinarySearch = new BinarySearch();
 
         //Begin Binary Search Test
         lTimeStarted = System.nanoTime();
-        iIndexReturned = oBinarySearch.findNumberBinarySearch(aiNums, iTargetNum, (iNumTotal-1), 0);
+        iIndexReturned = oBinarySearch.findNumberBinarySearch(asWords, sTargetString, (iasWordsTotal-1), 0);
         lTimeEnded = System.nanoTime();
         System.out.println("Binary Search Returned Index: [" + iIndexReturned + "]" );
         System.out.println("Binary Search Elapse Time: " + (lTimeEnded - lTimeStarted));
 
         //BEGIN Linear Search Test
         lTimeStarted = System.nanoTime();
-        iIndexReturned = oBinarySearch.findNumberLinearSearch(aiNums, iTargetNum);
+        iIndexReturned = oBinarySearch.findStringLinearSearch(asWords, sTargetString);
         lTimeEnded = System.nanoTime();
         System.out.println("Linear Search Elapse Time: " + (lTimeEnded - lTimeStarted));
         System.out.println("Linear Search Returned Index: [" + iIndexReturned + "]" );
 
     }
 
-    private int findNumberBinarySearch(int[] aiNums, int iTargetNum, int iHighIndex, int iLowIndex){
-        //is 1st guess == iTargetNum
+    private int findNumberBinarySearch(String[] asWords, String sTargetString, int iHighIndex, int iLowIndex){
+        //is 1st guess == sTargetString
        int iMiddleIndex = (iHighIndex + iLowIndex) / 2;
 
        //check if targetNum is @ iMiddleIndex
-       if(aiNums[iMiddleIndex] == iTargetNum){
+       if(asWords[iMiddleIndex].equals(sTargetString)){
            return iMiddleIndex;
        }
 
-       //check if target num is greater than num @ iMiddleIndex
-       else if(iTargetNum > aiNums[iMiddleIndex]){
-          return  findNumberBinarySearch(aiNums, iTargetNum, iHighIndex, (iMiddleIndex + 1));
+       //check if target string is greater than string @ iMiddleIndex
+       else if(sTargetString.compareTo(asWords[iMiddleIndex]) > 0){
+          return  findNumberBinarySearch(asWords, sTargetString, iHighIndex, (iMiddleIndex + 1));
 
         }
        //check if target num is less than num @ iMiddleIndex
        else {
-           return findNumberBinarySearch(aiNums, iTargetNum, (iMiddleIndex - 1), iLowIndex);
+           return findNumberBinarySearch(asWords, sTargetString, (iMiddleIndex - 1), iLowIndex);
         }
 
 
     }
 
 
-    //Linear Search
-    private int findNumberLinearSearch(int[] aiNums, int iTargetNum){
-        for(int i = 0; i < aiNums.length; i++){
-            if(aiNums[i] == iTargetNum){
+    //Linear Search returns index of target string
+    private int findStringLinearSearch(String[] asWords, String sTargetString){
+        for(int i = 0; i < asWords.length; i++){
+            if(asWords[i].equals(sTargetString)){
                 return i;
             }
         }
