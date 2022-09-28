@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class BinarySearch {
 
     public static void main(String[] args) {
-
+    //testing a commit issue with Github ...
         SecureRandom oRand = new SecureRandom();
         int iasWordsTotal = 10;  //Scalable
         String[] asWords = new String[iasWordsTotal];
