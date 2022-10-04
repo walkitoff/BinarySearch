@@ -64,19 +64,19 @@ public class BinarySearch {
         //is 1st guess == sTargetString
        int iMiddleIndex = (iHighIndex + iLowIndex) / 2;
 
-       //check if targetNum is @ iMiddleIndex
+       //check if sTargetString is @ iMiddleIndex
        if(asWords[iMiddleIndex].equals(sTargetString)){
            return iMiddleIndex;
        }
 
-       //check if target string is greater than string @ iMiddleIndex
+       //check if sTargetString is greater than string @ iMiddleIndex
        else if(sTargetString.compareTo(asWords[iMiddleIndex]) > 0){
-          return  findNumberBinarySearch(asWords, sTargetString, iHighIndex, (iMiddleIndex + 1));
+          return  findNumberBinarySearch(asWords, sTargetString, iHighIndex, (iMiddleIndex + 1)); //recursive
 
         }
-       //check if target num is less than num @ iMiddleIndex
+       //check if sTargetString is less than string @ iMiddleIndex
        else {
-           return findNumberBinarySearch(asWords, sTargetString, (iMiddleIndex - 1), iLowIndex);
+           return findNumberBinarySearch(asWords, sTargetString, (iMiddleIndex - 1), iLowIndex); //recursive
         }
 
 
